@@ -59,8 +59,8 @@ RUN docker-php-ext-install \
 
 RUN rm -rf /var/lib/apt/lists/*
 
-COPY ./scripts/*.sh /var/www/scripts/
-RUN chown www-data:www-data /var/www/scripts/*.sh && chmod +x /var/www/scripts/*.sh
+COPY ./scripts/*.sh /var/www/
+RUN chown www-data:www-data /var/www/*.sh && chmod +x /var/www/*.sh
 
 USER www-data
    

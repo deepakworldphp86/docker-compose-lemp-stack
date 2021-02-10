@@ -7,8 +7,8 @@ services:
             dockerfile: php.Dockerfile
         container_name: ${APP_NAME:?err}-php
         volumes:
-            - './app:/var/www/html'
-            - './scripts:/var/www/scripts'
+            - '../Docker-Projects/mage-enterprise-edition:/var/www/html'
+            - './scripts:/var/www'
   nginx:
         image: nginx:latest
         container_name: ${APP_NAME:?err}-nginx
@@ -18,7 +18,7 @@ services:
         links:
             - 'php'
         volumes:
-            - './app:/var/www/html'
+            - '../Docker-Projects/mage-enterprise-edition:/var/www/html'
             - './config/nginx:/etc/nginx/conf.d'
   mysql:
     environment:
@@ -34,6 +34,7 @@ services:
     volumes:
       - mysql-log:/var/log/mysql
       - mysql-lib:/var/lib/mysql
+      - ./mysql-backup:/home
   redis-obj:
     image: redis:${REDIS_VERSION}
     container_name: redis-obj
@@ -72,8 +73,6 @@ services:
       - "9300:9300"
     environment:
       - "discovery.type=single-node"
- #   networks:
- #     - elastic
   kibana:
     image: docker.elastic.co/kibana/kibana:7.6.2
     container_name: kibana
@@ -82,14 +81,8 @@ services:
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
- #  networks:
- #     - elastic
 volumes:
   mysql-log:
   mysql-lib:
-#  elasticsearch:
-#    driver: local
-#networks:
-#  elastic:
-#    driver: bridge
+
        

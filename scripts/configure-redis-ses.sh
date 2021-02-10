@@ -51,5 +51,5 @@ fi
 if [[ "${MAGENTO_REDIS_SES_MAX_LIFETIME}" ]]; then
   redis_ses_args+=("--session-save-redis-max-lifetime=$MAGENTO_REDIS_SES_MAX_LIFETIME")
 fi
-echo "Configuring Redis sessions: /var/www/html/bin/magento setup:config:set --session-save=redis ${redis_ses_args[@]}"
-/var/www/html/bin/magento setup:config:set --session-save=redis "${redis_ses_args[@]}"
+echo "Configuring Redis sessions: /var/www/html/magento/bin/magento setup:config:set --session-save=redis ${redis_ses_args[@]}"
+/var/www/html/magento/bin/magento setup:config:set --session-save=redis "${redis_ses_args[@]}"

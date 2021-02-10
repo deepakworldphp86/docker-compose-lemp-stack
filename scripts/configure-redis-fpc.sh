@@ -15,5 +15,5 @@ fi
 if [[ "${MAGENTO_REDIS_FPC_COMPRESS_DATA}" ]]; then
   redis_fpc_args+=("--page-cache-redis-compress-data=$MAGENTO_REDIS_FPC_COMPRESS_DATA")
 fi
-echo "Configuring Redis page cache: /var/www/html/magento2.4/bin/magento setup:config:set --page-cache=redis ${redis_fpc_args[@]}"
-/var/www/html/magento2.4/bin/magento setup:config:set --page-cache=redis "${redis_fpc_args[@]}"
+echo "Configuring Redis page cache: /var/www/html/magento/bin/magento setup:config:set --page-cache=redis ${redis_fpc_args[@]}"
+/var/www/html/magento/bin/magento setup:config:set --page-cache=redis "${redis_fpc_args[@]}"

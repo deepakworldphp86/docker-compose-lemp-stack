@@ -12,5 +12,5 @@ fi
 if [[ "${MAGENTO_REDIS_OBJ_PASSWORD}" ]]; then
   redis_obj_args+=("--cache-backend-redis-password=$MAGENTO_REDIS_OBJ_PASSWORD")
 fi
-echo "Configuring Redis object cache: /var/www/html/magento2.4/bin/magento setup:config:set --cache-backend=redis ${redis_obj_args[@]}"
-/var/www/html/magento2.4/bin/magento setup:config:set --cache-backend=redis "${redis_obj_args[@]}"
+echo "Configuring Redis object cache: /var/www/html/magento/bin/magento setup:config:set --cache-backend=redis ${redis_obj_args[@]}"
+/var/www/html/magento/bin/magento setup:config:set --cache-backend=redis "${redis_obj_args[@]}"
