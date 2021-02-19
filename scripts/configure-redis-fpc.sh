@@ -1,4 +1,5 @@
 #!/bin/bash
+source '.env'
 redis_fpc_args=()
 if [[ "${MAGENTO_REDIS_FPC_SERVER}" ]]; then
   redis_fpc_args+=("--page-cache-redis-server=$MAGENTO_REDIS_FPC_SERVER")

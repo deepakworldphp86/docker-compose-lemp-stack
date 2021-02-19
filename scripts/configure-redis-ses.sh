@@ -1,4 +1,5 @@
 #!/bin/bash
+source '.env'
 redis_ses_args=()
 if [[ "${MAGENTO_REDIS_SES_SERVER}" ]]; then
   redis_ses_args+=("--session-save-redis-host=$MAGENTO_REDIS_SES_SERVER")

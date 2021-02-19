@@ -9,6 +9,7 @@ services:
         volumes:
             - '../Docker-Projects/mage-enterprise-edition:/var/www/html'
             - './scripts:/var/www'
+            - ./docker/php/config/custom.ini:/usr/local/etc/php/conf.d/custom.ini
   nginx:
         image: nginx:latest
         container_name: ${APP_NAME:?err}-nginx

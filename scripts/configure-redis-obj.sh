@@ -1,4 +1,5 @@
 #!/bin/bash
+source '.env'
 redis_obj_args=()
 if [[ "${MAGENTO_REDIS_OBJ_SERVER}" ]]; then
   redis_obj_args+=("--cache-backend-redis-server=$MAGENTO_REDIS_OBJ_SERVER")
