@@ -1,34 +1,47 @@
 version: '3'
 services:
+#  timezone:
+#    build: .
+#    environment:
+#      - TZ=America/New_York
+#      - DEBIAN_FRONTEND=noninteractive
   php:
-        # image: 'php:7.2-fpm'
         build:
             context: ./docker/php
-            dockerfile: php.Dockerfile
+            dockerfile: php-alpine.Dockerfile
         container_name: ${APP_NAME:?err}-php
+        #network_mode: "host"
+        ports:
+          - "9000:9000"
         volumes:
             - '../Docker-Projects/mage-enterprise-edition:/var/www/html'
             - './scripts:/var/www'
             - ./docker/php/config/custom.ini:/usr/local/etc/php/conf.d/custom.ini
   nginx:
-        image: nginx:latest
-        container_name: ${APP_NAME:?err}-nginx
-        ports:
-            - '80:80'
-            - '443:443'
-        links:
-            - 'php'
-        volumes:
-            - '../Docker-Projects/mage-enterprise-edition:/var/www/html'
-            - './config/nginx:/etc/nginx/conf.d'
+    image: nginx:latest
+    container_name: ${APP_NAME:?err}-nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+      - 'php'
+    volumes:
+      - '../Docker-Projects/mage-enterprise-edition:/var/www/html'
+      - './config/nginx:/etc/nginx/conf.d'
+  mailhog:
+    image: mailhog/mailhog:v1.0.0
+    ports:
+      - "1025:1025"
+      - "8025:8025"
   mysql:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USER="magento"
+      - MYSQL_PASSWORD="magento"
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     image: percona:${MYSQL_VERSION}
     container_name: percona-mysql8
+    #command: --skip-grant-tables
     ports:
       - "3306:3306"
     restart: always
@@ -36,6 +49,8 @@ services:
       - mysql-log:/var/log/mysql
       - mysql-lib:/var/lib/mysql
       - ./mysql-backup:/home
+
+
   redis-obj:
     image: redis:${REDIS_VERSION}
     container_name: redis-obj

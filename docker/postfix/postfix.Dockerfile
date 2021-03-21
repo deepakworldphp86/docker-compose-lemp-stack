@@ -3,19 +3,23 @@ FROM php:7.4-fpm
 #ENV COMPOSER_HOME /var/www/.composer
 
 RUN apt-get update && \
-    apt-get install -y git zip
+    apt-get install -q -y  git zip postfix mailutils
 
 RUN curl -sS https://getcomposer.org/installer | php -- \
         --install-dir=/usr/local/bin \
-        --filename=composer --version=1.10.16 && \
-        composer global require --optimize-autoloader \
-        "fxp/composer-asset-plugin:~1.4.6" \
-        "hirak/prestissimo:^0.3.10" && \
-        composer global dumpautoload --optimize && \
-        composer clear-cache
-    
-    
-    
+        --filename=composer --version=1.10.16
+
+
+#MAIL HOG
+
+RUN apt-get update &&\
+    apt-get install --no-install-recommends --assume-yes --quiet ca-certificates curl git &&\
+    rm -rf /var/lib/apt/lists/*
+RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
+ENV PATH /usr/local/go/bin:$PATH
+RUN go get github.com/mailhog/mhsendmail
+RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
+RUN echo 'sendmail_path = /usr/bin/mhsendmail --smtp-addr mailhog:1025' > /usr/local/etc/php/php.ini
     
 RUN apt-get update && apt-get install -y \
   git \
@@ -37,14 +41,9 @@ RUN apt-get update && apt-get install -y \
   libonig-dev \
   procps \
   libcurl4-openssl-dev \
-  curl \
-  gcc \
-  sudo \
-  g++ 
-
+  curl
 
 RUN  docker-php-ext-configure gd --with-freetype --with-jpeg
-
 
 RUN docker-php-ext-install \
   bcmath \
@@ -67,20 +66,12 @@ RUN docker-php-ext-install \
   sysvshm \
   xsl \
   zip
-  
 
-RUN pecl channel-update pecl.php.net \
-  && pecl install xdebug
-
-RUN docker-php-ext-enable xdebug \
-  && sed -i -e 's/^zend_extension/\;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
-#Swap
 
 RUN rm -rf /var/lib/apt/lists/*
-
-COPY *.sh /var/www/
-RUN chown www-data:www-data /var/www/*.sh && chmod +x /var/www/*.sh
+COPY ./scripts/*.sh /var/www/
+COPY etc/ssmtp/ssmtp.cf  /etc/ssmtp/
+#RUN chown www-data:www-data /var/www/*.sh && chmod +x /var/www/*.sh
 
 USER www-data
    

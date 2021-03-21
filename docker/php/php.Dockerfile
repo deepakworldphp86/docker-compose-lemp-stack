@@ -56,7 +56,14 @@ RUN docker-php-ext-install \
   xsl \
   zip
 
-
+ENV PHP_MEMORY_LIMIT 2G
+ENV PHP_PORT 9000
+ENV PHP_PM dynamic
+ENV PHP_PM_MAX_CHILDREN 10
+ENV PHP_PM_START_SERVERS 4
+ENV PHP_PM_MIN_SPARE_SERVERS 2
+ENV PHP_PM_MAX_SPARE_SERVERS 6
+ENV APP_MAGE_MODE default
 RUN rm -rf /var/lib/apt/lists/*
 
 COPY ./scripts/*.sh /var/www/
