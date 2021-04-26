@@ -14,7 +14,7 @@ services:
         ports:
           - "9000:9000"
         volumes:
-            - '../Docker-Projects/mage-enterprise-edition:/var/www/html'
+            - '../Docker-Projects/mage-ce-edition:/var/www/html'
             - './scripts:/var/www'
             - ./docker/php/config/custom.ini:/usr/local/etc/php/conf.d/custom.ini
   nginx:
@@ -26,7 +26,7 @@ services:
     links:
       - 'php'
     volumes:
-      - '../Docker-Projects/mage-enterprise-edition:/var/www/html'
+      - '../Docker-Projects/mage-ce-edition:/var/www/html'
       - './config/nginx:/etc/nginx/conf.d'
   mailhog:
     image: mailhog/mailhog:v1.0.0
