@@ -1,9 +1,8 @@
 #!/bin/bash
-source '.env'
 
-if [ -z "$(ls -A /var/www/html/wc_tesler)" ]; then
+if [ -z "$(ls -A /var/www/html/m2_ce)" ]; then
   echo "Downloading Magento installation from https://repo.magento.com"
-  OMPOSER_MEMORY_LIMIT=-1 composer create-project --repository-url=https://repo.magento.com/ magento/project-enterprise-edition=${MAGENTO_VERSION} /var/www/html/wc_tesler 
+  OMPOSER_MEMORY_LIMIT=-1 composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=${MAGENTO_VERSION} /var/www/html/m2_ce
 
   install_args=()
   if [[ "${MAGENTO_ADMIN_FIRSTNAME}" ]]; then
@@ -105,8 +104,8 @@ if [ -z "$(ls -A /var/www/html/wc_tesler)" ]; then
   if [[ "${MAGENTO_AMQP_SSL}" ]]; then
     install_args+=("--amqp-ssl=$MAGENTO_AMQP_SSL")
   fi
-  echo "Running Magento install: php -d memory_limit=-1 /var/www/html/wc_tesler/bin/magento setup:install ${install_args[@]}"
-  /var/www/html/wc_tesler/bin/magento setup:install "${install_args[@]}"
+  echo "Running Magento install: php -d memory_limit=-1 /var/www/html/m2_ce/bin/magento setup:install ${install_args[@]}"
+  /var/www/html/m2_ce/bin/magento setup:install "${install_args[@]}"
 
   if [[ "${MAGENTO_REDIS_OBJ_SERVER}" ]]; then
     /var/www/configure-redis-obj.sh
@@ -117,7 +116,7 @@ if [ -z "$(ls -A /var/www/html/wc_tesler)" ]; then
   if [[ "${MAGENTO_REDIS_SES_SERVER}" ]]; then
     /var/www/configure-redis-ses.sh
   fi
-elif [ ! -z "$(ls -A /var/www/html/wc_tesler)"  ];
+elif [ ! -z "$(ls -A /var/www/html/m2_ce)"  ];
 then
      install_args=()
   if [[ "${MAGENTO_ADMIN_FIRSTNAME}" ]]; then
@@ -220,8 +219,8 @@ then
     install_args+=("--amqp-ssl=$MAGENTO_AMQP_SSL")
   fi
   echo "${install_args[@]}"
-  echo "Runniddddddng Magento install: php -d memory_limit=-1 /var/www/html/wc_tesler/bin/magento setup:install ${install_args[@]}"
-  /var/www/html/wc_tesler/bin/magento setup:install "${install_args[@]}"
+  echo "Runniddddddng Magento install: php -d memory_limit=-1 /var/www/html/m2_ce/bin/magento setup:install ${install_args[@]}"
+  /var/www/html/m2_ce/bin/magento setup:install "${install_args[@]}"
 
   if [[ "${MAGENTO_REDIS_OBJ_SERVER}" ]]; then
     /var/www/configure-redis-obj.sh
